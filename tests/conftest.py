@@ -14,4 +14,7 @@ def uk_postalcode_validator():
 
 @pytest.fixture
 def uk_postalcode_validator_instance(raw_uk_postalcode, uk_postalcode_validator):
-    return uk_postalcode_validator(raw_uk_postalcode)
+    uk_postalcode_validator_instance = uk_postalcode_validator(raw_uk_postalcode)
+    uk_postalcode_validator_instance.validate()
+
+    return uk_postalcode_validator_instance

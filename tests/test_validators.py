@@ -1,4 +1,5 @@
 import pytest
+from uk_postcode_validator.exceptions import PostcodeNotValidated
 
 
 def test_uk_postcode_validator_constructor(raw_uk_postalcode, uk_postalcode_validator_instance):
@@ -150,5 +151,29 @@ def test_uk_postcode_validator_validate_uppercase_postcodes(raw_postcode, uk_pos
         "CO4 3SQ",
     ),
 )
-def test_validated_special_cases(raw_postcode, uk_postalcode_validator):
+def test_uk_postcode_validator_validate_special_cases(raw_postcode, uk_postalcode_validator):
     assert uk_postalcode_validator(raw_postcode).validate() is True
+
+
+def test_uk_postcode_validator_outward_raises_exception_when_not_validated(uk_postalcode_validator):
+    postcode_instance = uk_postalcode_validator("EC1A 1BB")
+    with pytest.raises(PostcodeNotValidated):
+        postcode_instance.outward
+
+
+@pytest.mark.parametrize(
+    "raw_postcode, expected_outward",
+    (
+        ("EC1A 1BB", "EC1A"),
+        ("W1A 0AX", "W1A"),
+        ("M1 1AE", "M1"),
+        ("AI-2640", "AI"),
+        ("KY1-1300", "KY1"),
+        ("MSR1110", "MSR1110"),  # what's the outward in this cases?
+    ),
+)
+def test_uk_postcode_validator_outward_result(raw_postcode, expected_outward, uk_postalcode_validator):
+    postcode_instance = uk_postalcode_validator(raw_postcode)
+    postcode_instance.validate()
+
+    assert postcode_instance.outward == expected_outward

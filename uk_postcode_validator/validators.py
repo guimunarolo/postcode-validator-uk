@@ -1,16 +1,12 @@
 import re
 
 from . import constants
+from .decorators import validaton_protected_property
 
 
 class UKPostcode:
-    outward_code = None
-    inward_code = None
-    area = None
-    district = None
-    sector = None
-    unit = None
     raw_postcode = None
+    validated_postcode = None
 
     def __init__(self, postcode):
         self.raw_postcode = f"{postcode}"
@@ -18,10 +14,20 @@ class UKPostcode:
     def __str__(self):
         return f"{self.raw_postcode}"
 
+    @validaton_protected_property
+    def outward(self):
+        splited_postcode = self.validated_postcode.split(" ")
+        if len(splited_postcode) > 1:
+            return splited_postcode[0]
+
+        return self.validated_postcode.split("-")[0]
+
     def validate(self):
         postcode = self.raw_postcode.upper()
         validation_regex = re.compile(constants.UK_POSTCODE_VALIDATION_REGEX)
         if not validation_regex.match(postcode):
             return False
+
+        self.validated_postcode = postcode
 
         return True
