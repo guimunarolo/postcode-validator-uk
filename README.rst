@@ -5,9 +5,8 @@ uk-postcode-validator
     :target: https://pypi.python.org/pypi/uk-postcode-validator
     :alt: Latest PyPI version
 
-.. image:: https://travis-ci.com/guimunarolo/uk-postcode-validator.png
-   :target: https://travis-ci.com/guimunarolo/uk-postcode-validator
-   :alt: Latest Travis CI build status
+.. image:: https://circleci.com/gh/guimunarolo/uk-postcode-validator.svg?style=svg
+    :target: https://circleci.com/gh/guimunarolo/uk-postcode-validator
 
 A UK postcode validator
 

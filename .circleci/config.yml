@@ -1,0 +1,50 @@
+# Python CircleCI 2.0 configuration file
+# Check https://circleci.com/docs/2.0/language-python/ for more details
+
+version: 2
+jobs:
+    build:
+        docker:
+            - image: circleci/python:3.8.1-buster
+
+        working_directory: ~/repo
+        steps:
+            - checkout
+
+            - restore_cache:
+                name: Restoring dependencies cache
+                keys:
+                - v1-dependencies-{{ checksum "Pipfile.lock" }}
+
+            - run:
+                name: Install system dependencies
+                command: sudo pip install pipenv
+
+            - run:
+                name: Install dependencies
+                command: pipenv install --dev --deploy
+
+            - save_cache:
+                name: Saving dependencies cache
+                paths:
+                    - ./venv
+                key: v1-dependencies={{ checksum "Pipfile.lock" }}
+
+            - restore_cache:
+                name: Restoring hooks cache
+                key: v1-hooks-{{ checksum ".pre-commit-config.yaml" }}
+
+            - run:
+                name: linters
+                command: SKIP=no-commit-to-branch pipenv run pre-commit run -a -v
+
+            - save_cache:
+                name: Saving hooks cache
+                paths:
+                    - "~/.cache/pre-commit"
+                key: v1-hooks-{{ checksum ".pre-commit-config.yaml" }}
+
+            - run:
+                name: Run tests
+                command: |
+                    pipenv run pytest
