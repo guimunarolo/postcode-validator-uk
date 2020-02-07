@@ -30,6 +30,17 @@ class UKPostcode:
 
         return self.validated_postcode.split("-")[-1]
 
+    @property
+    def area(self):
+        return re.search(r"^[A-Z]{1,2}", self.outward).group()
+
+    @property
+    def district(self):
+        try:
+            return re.search(r"[0-9]{1,2}[A-Z]?$", self.outward).group()
+        except AttributeError:
+            return ""
+
     def validate(self):
         postcode = self.raw_postcode.upper()
         validation_regex = re.compile(constants.UK_POSTCODE_VALIDATION_REGEX)
