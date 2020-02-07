@@ -41,6 +41,17 @@ class UKPostcode:
         except AttributeError:
             return ""
 
+    @property
+    def sector(self):
+        try:
+            return re.search(r"^[0-9]", self.inward).group()
+        except AttributeError:
+            return ""
+
+    @property
+    def unit(self):
+        return re.search(r"[A-Z0-9]{2}$", self.inward).group()
+
     def validate(self):
         postcode = self.raw_postcode.upper()
         validation_regex = re.compile(constants.UK_POSTCODE_VALIDATION_REGEX)

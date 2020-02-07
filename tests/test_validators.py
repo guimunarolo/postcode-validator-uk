@@ -249,3 +249,51 @@ def test_uk_postcode_validator_district_result(raw_postcode, expected_district, 
     postcode_instance.validate()
 
     assert postcode_instance.district == expected_district
+
+
+def test_uk_postcode_validator_sector_raises_exception_when_not_validated(uk_postcode_validator):
+    postcode_instance = uk_postcode_validator("EC1A 1BB")
+    with pytest.raises(PostcodeNotValidated):
+        postcode_instance.sector
+
+
+@pytest.mark.parametrize(
+    "raw_postcode, expected_sector",
+    (
+        ("EC1A 1BB", "1"),
+        ("W1A 0AX", "0"),
+        ("M1 1AE", "1"),
+        ("AI-2640", "2"),
+        ("KY1-1300", "1"),
+        ("MSR1110", ""),
+    ),
+)
+def test_uk_postcode_validator_sector_result(raw_postcode, expected_sector, uk_postcode_validator):
+    postcode_instance = uk_postcode_validator(raw_postcode)
+    postcode_instance.validate()
+
+    assert postcode_instance.sector == expected_sector
+
+
+def test_uk_postcode_validator_unit_raises_exception_when_not_validated(uk_postcode_validator):
+    postcode_instance = uk_postcode_validator("EC1A 1BB")
+    with pytest.raises(PostcodeNotValidated):
+        postcode_instance.unit
+
+
+@pytest.mark.parametrize(
+    "raw_postcode, expected_unit",
+    (
+        ("EC1A 1BB", "BB"),
+        ("W1A 0AX", "AX"),
+        ("M1 1AE", "AE"),
+        ("AI-2640", "40"),
+        ("KY1-1300", "00"),
+        ("MSR1110", "10"),
+    ),
+)
+def test_uk_postcode_validator_unit_result(raw_postcode, expected_unit, uk_postcode_validator):
+    postcode_instance = uk_postcode_validator(raw_postcode)
+    postcode_instance.validate()
+
+    assert postcode_instance.unit == expected_unit
