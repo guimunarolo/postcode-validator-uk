@@ -177,3 +177,27 @@ def test_uk_postcode_validator_outward_result(raw_postcode, expected_outward, uk
     postcode_instance.validate()
 
     assert postcode_instance.outward == expected_outward
+
+
+def test_uk_postcode_validator_inward_raises_exception_when_not_validated(uk_postalcode_validator):
+    postcode_instance = uk_postalcode_validator("EC1A 1BB")
+    with pytest.raises(PostcodeNotValidated):
+        postcode_instance.inward
+
+
+@pytest.mark.parametrize(
+    "raw_postcode, expected_inward",
+    (
+        ("EC1A 1BB", "1BB"),
+        ("W1A 0AX", "0AX"),
+        ("M1 1AE", "1AE"),
+        ("AI-2640", "2640"),
+        ("KY1-1300", "1300"),
+        ("MSR1110", "MSR1110"),  # what's the inward in this cases?
+    ),
+)
+def test_uk_postcode_validator_inward_result(raw_postcode, expected_inward, uk_postalcode_validator):
+    postcode_instance = uk_postalcode_validator(raw_postcode)
+    postcode_instance.validate()
+
+    assert postcode_instance.inward == expected_inward

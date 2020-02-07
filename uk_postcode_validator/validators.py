@@ -22,6 +22,14 @@ class UKPostcode:
 
         return self.validated_postcode.split("-")[0]
 
+    @validaton_protected_property
+    def inward(self):
+        splited_postcode = self.validated_postcode.split(" ")
+        if len(splited_postcode) > 1:
+            return splited_postcode[-1]
+
+        return self.validated_postcode.split("-")[-1]
+
     def validate(self):
         postcode = self.raw_postcode.upper()
         validation_regex = re.compile(constants.UK_POSTCODE_VALIDATION_REGEX)
