@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "0b87f9475ab9f45ceda4e342d80560e8dcecdab98ffa05e2df0a8014d3fa8a81"
+            "sha256": "e8cbc3d3ae646d417f9badc95ea1859d855e668d533b9467aa201d9ddf11623f"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -103,6 +103,13 @@
                 "sha256:d824ebe21f38325c771c41b08a95a761db1982f1fc0eee37c6c97df3f1636b96"
             ],
             "version": "==1.4.11"
+        },
+        "ipdb": {
+            "hashes": [
+                "sha256:5d9a4a0e3b7027a158fc6f2929934341045b9c3b0b86ed5d7e84e409653f72fd"
+            ],
+            "index": "pypi",
+            "version": "==0.12.3"
         },
         "ipython": {
             "hashes": [
@@ -233,14 +240,6 @@
             ],
             "index": "pypi",
             "version": "==2.8.1"
-        },
-        "pytest-deadfixtures": {
-            "hashes": [
-                "sha256:458b2314862696af11223d869c97814e63db8a7b9f61dcf42fe07a72a7ff9bd8",
-                "sha256:61e34fb0f777bc0f321c7d45f39447e965fb1a6d2de243e47aa034387229d9d3"
-            ],
-            "index": "pypi",
-            "version": "==2.1.0"
         },
         "pytest-randomly": {
             "hashes": [

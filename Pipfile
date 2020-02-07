@@ -11,7 +11,7 @@ pre-commit = "*"
 pytest = "*"
 pytest-cov = "*"
 pytest-randomly = "*"
-pytest-deadfixtures = "*"
+ipdb = "*"
 ipython = "*"
 
 [requires]
