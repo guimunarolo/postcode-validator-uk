@@ -1,6 +1,10 @@
 Changelog
 ---------
 
+0.0.3
+~~~~~~
+* Fix Python compatibility list
+
 0.0.2
 ~~~~~~
 * Fix setup
