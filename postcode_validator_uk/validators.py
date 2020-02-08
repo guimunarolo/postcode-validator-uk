@@ -1,6 +1,12 @@
 import re
 
-from . import constants
+from .constants import (
+    UK_POSTCODE_AREA_REGEX,
+    UK_POSTCODE_DISTRICT_REGEX,
+    UK_POSTCODE_SECTOR_REGEX,
+    UK_POSTCODE_UNIT_REGEX,
+    UK_POSTCODE_VALIDATION_REGEX,
+)
 from .decorators import validaton_protected_property
 from .exceptions import InvalidPostcode
 
@@ -33,30 +39,29 @@ class UKPostcode:
 
     @property
     def area(self):
-        return re.search(r"^[A-Z]{1,2}", self.outward).group()
+        return re.search(UK_POSTCODE_AREA_REGEX, self.outward).group()
 
     @property
     def district(self):
         try:
-            return re.search(r"[0-9]{1,2}[A-Z]?$", self.outward).group()
+            return re.search(UK_POSTCODE_DISTRICT_REGEX, self.outward).group()
         except AttributeError:
             return ""
 
     @property
     def sector(self):
         try:
-            return re.search(r"^[0-9]", self.inward).group()
+            return re.search(UK_POSTCODE_SECTOR_REGEX, self.inward).group()
         except AttributeError:
             return ""
 
     @property
     def unit(self):
-        return re.search(r"[A-Z0-9]{2}$", self.inward).group()
+        return re.search(UK_POSTCODE_UNIT_REGEX, self.inward).group()
 
     def validate(self):
         postcode = self.raw_postcode.upper()
-        validation_regex = re.compile(constants.UK_POSTCODE_VALIDATION_REGEX)
-        if not validation_regex.match(postcode):
+        if not UK_POSTCODE_VALIDATION_REGEX.match(postcode):
             raise InvalidPostcode
 
         self.validated_postcode = postcode
