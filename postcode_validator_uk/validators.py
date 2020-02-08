@@ -7,13 +7,14 @@ from .constants import (
     UK_POSTCODE_UNIT_REGEX,
     UK_POSTCODE_VALIDATION_REGEX,
 )
-from .decorators import validaton_protected_property
-from .exceptions import InvalidPostcode
+from .exceptions import InvalidPostcode, PostcodeNotValidated
 
 
 class UKPostcode:
     raw_postcode = None
     validated_postcode = None
+    _outward = None
+    _inward = None
 
     def __init__(self, postcode):
         self.raw_postcode = f"{postcode}"
@@ -21,21 +22,19 @@ class UKPostcode:
     def __str__(self):
         return f"{self.raw_postcode}"
 
-    @validaton_protected_property
+    @property
     def outward(self):
-        splited_postcode = self.validated_postcode.split(" ")
-        if len(splited_postcode) > 1:
-            return splited_postcode[0]
+        if self._outward is None:
+            raise PostcodeNotValidated
 
-        return self.validated_postcode.split("-")[0]
+        return self._outward
 
-    @validaton_protected_property
+    @property
     def inward(self):
-        splited_postcode = self.validated_postcode.split(" ")
-        if len(splited_postcode) > 1:
-            return splited_postcode[-1]
+        if self._inward is None:
+            raise PostcodeNotValidated
 
-        return self.validated_postcode.split("-")[-1]
+        return self._inward
 
     @property
     def area(self):
@@ -43,17 +42,11 @@ class UKPostcode:
 
     @property
     def district(self):
-        try:
-            return re.search(UK_POSTCODE_DISTRICT_REGEX, self.outward).group()
-        except AttributeError:
-            return ""
+        return re.search(UK_POSTCODE_DISTRICT_REGEX, self.outward).group()
 
     @property
     def sector(self):
-        try:
-            return re.search(UK_POSTCODE_SECTOR_REGEX, self.inward).group()
-        except AttributeError:
-            return ""
+        return re.search(UK_POSTCODE_SECTOR_REGEX, self.inward).group()
 
     @property
     def unit(self):
@@ -61,7 +54,9 @@ class UKPostcode:
 
     def validate(self):
         postcode = self.raw_postcode.upper()
-        if not UK_POSTCODE_VALIDATION_REGEX.match(postcode):
+        postcode_matchs = UK_POSTCODE_VALIDATION_REGEX.match(postcode)
+        if not postcode_matchs:
             raise InvalidPostcode
 
-        self.validated_postcode = postcode
+        self._outward, self._inward = postcode_matchs.groups()
+        self.validated_postcode = f"{self._outward} {self._inward}"
