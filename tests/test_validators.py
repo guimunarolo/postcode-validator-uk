@@ -1,5 +1,5 @@
 import pytest
-from uk_postcode_validator.exceptions import PostcodeNotValidated
+from uk_postcode_validator.exceptions import InvalidPostcode, PostcodeNotValidated
 
 
 def test_uk_postcode_validator_constructor(raw_uk_postcode, uk_postcode_validator_instance):
@@ -26,7 +26,7 @@ def test_uk_postcode_validator_string_conversion(raw_uk_postcode, uk_postcode_va
     ),
 )
 def test_uk_postcode_validator_validate_lowercase_postcodes(raw_postcode, uk_postcode_validator):
-    assert uk_postcode_validator(raw_postcode.lower()).validate() is True
+    assert uk_postcode_validator(raw_postcode.lower()).validate() is None
 
 
 @pytest.mark.parametrize(
@@ -45,7 +45,7 @@ def test_uk_postcode_validator_validate_lowercase_postcodes(raw_postcode, uk_pos
     ),
 )
 def test_uk_postcode_validator_validate_uppercase_postcodes(raw_postcode, uk_postcode_validator):
-    assert uk_postcode_validator(raw_postcode).validate() is True
+    assert uk_postcode_validator(raw_postcode).validate() is None
 
 
 @pytest.mark.parametrize(
@@ -152,7 +152,15 @@ def test_uk_postcode_validator_validate_uppercase_postcodes(raw_postcode, uk_pos
     ),
 )
 def test_uk_postcode_validator_validate_special_cases(raw_postcode, uk_postcode_validator):
-    assert uk_postcode_validator(raw_postcode).validate() is True
+    assert uk_postcode_validator(raw_postcode).validate() is None
+
+
+@pytest.mark.parametrize(
+    "invalid_postcode", ("EC1A A4BB", "1W1A 0AX", "M001 1AE", "B338-TH5", "CR2 6XH#", "", "0000000", None,),
+)
+def test_uk_postcode_validator_validate_raises_validation_exception(invalid_postcode, uk_postcode_validator):
+    with pytest.raises(InvalidPostcode):
+        uk_postcode_validator(invalid_postcode).validate()
 
 
 def test_uk_postcode_validator_outward_raises_exception_when_not_validated(uk_postcode_validator):

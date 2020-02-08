@@ -2,6 +2,7 @@ import re
 
 from . import constants
 from .decorators import validaton_protected_property
+from .exceptions import InvalidPostcode
 
 
 class UKPostcode:
@@ -56,8 +57,6 @@ class UKPostcode:
         postcode = self.raw_postcode.upper()
         validation_regex = re.compile(constants.UK_POSTCODE_VALIDATION_REGEX)
         if not validation_regex.match(postcode):
-            return False
+            raise InvalidPostcode
 
         self.validated_postcode = postcode
-
-        return True
