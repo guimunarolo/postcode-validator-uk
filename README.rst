@@ -8,6 +8,9 @@ uk-postcode-validator
 .. image:: https://circleci.com/gh/guimunarolo/uk-postcode-validator.svg?style=svg
     :target: https://circleci.com/gh/guimunarolo/uk-postcode-validator
 
+.. image:: https://codecov.io/gh/guimunarolo/uk-postcode-validator/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/guimunarolo/uk-postcode-validator
+
 A UK postcode validator
 
 Usage

@@ -6,13 +6,13 @@ name = "pypi"
 [packages]
 
 [dev-packages]
-coverage = "*"
+codecov = "*"
+ipdb = "*"
+ipython = "*"
 pre-commit = "*"
 pytest = "*"
 pytest-cov = "*"
 pytest-randomly = "*"
-ipdb = "*"
-ipython = "*"
 
 [requires]
 python_version = "3.8"
