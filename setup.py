@@ -2,7 +2,7 @@ import io
 import os
 import re
 
-from setuptools import find_packages, setup
+from setuptools import setup
 
 
 def read(filename):
@@ -19,9 +19,9 @@ setup(
     license="MIT",
     author="Guilherme Munarolo",
     author_email="guimunarolo@hotmail.com",
-    description="A UK postcode validator",
-    long_description=read("README.rst"),
-    packages=find_packages(exclude=("tests",)),
+    description="A simple UK postcode validator.",
+    long_description=read("README.md"),
+    packages=[],
     install_requires=[],
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
