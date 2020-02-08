@@ -1,5 +1,5 @@
 import pytest
-from uk_postcode_validator.validators import UKPostcode
+from postcode_validator_uk.validators import UKPostcode
 
 
 @pytest.fixture

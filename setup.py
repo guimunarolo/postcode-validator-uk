@@ -13,9 +13,9 @@ def read(filename):
 
 
 setup(
-    name="uk-postcode-validator",
+    name="postcode-validator-uk",
     version="0.1.0",
-    url="https://github.com/guimunarolo/uk-postcode-validator",
+    url="https://github.com/guimunarolo/postcode-validator-uk",
     license="MIT",
     author="Guilherme Munarolo",
     author_email="guimunarolo@hotmail.com",

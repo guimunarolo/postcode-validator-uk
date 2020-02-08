@@ -1,5 +1,5 @@
 import pytest
-from uk_postcode_validator.exceptions import InvalidPostcode, PostcodeNotValidated
+from postcode_validator_uk.exceptions import InvalidPostcode, PostcodeNotValidated
 
 
 def test_uk_postcode_validator_constructor(raw_uk_postcode, uk_postcode_validator_instance):
