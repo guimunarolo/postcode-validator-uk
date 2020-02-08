@@ -5,7 +5,7 @@ Changelog
 ~~~~~~
 * Remove special postcodes semi compatibility
 * Improve code legibility
-* Improve formatting
+* Improve postcode formatting
 
 0.0.3
 ~~~~~~
