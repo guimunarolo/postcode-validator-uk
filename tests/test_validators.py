@@ -15,6 +15,13 @@ def test_uk_postcode_validator_string_conversion(raw_uk_postcode, uk_postcode_va
 
 
 @pytest.mark.parametrize(
+    "raw_postcode", ("W31BB", "W3 1BB", "W3  1BB", "W3  1BB",),
+)
+def test_uk_postcode_validator_validate_with_any_spaces_amount(raw_postcode, uk_postcode_validator):
+    assert uk_postcode_validator(raw_postcode).validate() is None
+
+
+@pytest.mark.parametrize(
     "raw_postcode",
     (
         "EC1A 1BB",

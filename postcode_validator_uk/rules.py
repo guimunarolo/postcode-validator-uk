@@ -61,9 +61,9 @@ class CentralLondonDistrict(PostcodeRule):
     """
 
     attr_applied = "outward"
-    applied_areas_regex = re.compile(r"^(EC|E1|N1|NW1|SE1|SW1|W1|WC1|WC2)")
+    applied_areas_regex = re.compile(r"^(EC[0-9]|E1|N1|NW1|SE1|SW1|W1|WC1|WC2)[A-Z]")
     rule_regex = re.compile(
-        r"^EC[1-4][A-Z]$|^E1W$|^N1[C|P]$|^NW1W$|^SE1P$|^SW1[A-Z]$|^W1[A-Z]$|^WC[1-2][A-Z]$"
+        r"^EC[1-4][A-Z]?$|^E1[W]?$|^N1[C|P]?$|^NW1[W]?$|^SE1[P]?$|^SW1[A-Z]?$|^W1[A-Z]?$|^WC[1-2][A-Z]?$"
     )
 
 
