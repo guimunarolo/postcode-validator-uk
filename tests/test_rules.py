@@ -1,9 +1,11 @@
 import re
+import string
 from unittest import mock
 
 import pytest
 from postcode_validator_uk.exceptions import InvalidPostcode
 from postcode_validator_uk.rules import (
+    CentralLondonDistrict,
     DoubleDigitDistrict,
     PostcodeRule,
     SingleDigitDistrict,
@@ -179,3 +181,49 @@ class TestZeroOrTenDistrict:
 
         with pytest.raises(InvalidPostcode):
             rule.validate()
+
+
+class TestCentralLondonDistrict:
+    @pytest.mark.parametrize("numeric", range(1, 10))
+    def test_validating_EC_only_between_one_and_four(self, numeric):
+        postcode = mock.Mock(outward=f"EC{numeric}A")
+        rule = CentralLondonDistrict(postcode)
+
+        if numeric < 5:
+            assert rule.validate() is None
+        else:
+            with pytest.raises(InvalidPostcode):
+                rule.validate()
+
+    @pytest.mark.parametrize("alphanumeric", string.ascii_uppercase)
+    def test_validating_E1_only_with_W(self, alphanumeric):
+        postcode = mock.Mock(outward=f"E1{alphanumeric}")
+        rule = CentralLondonDistrict(postcode)
+
+        if alphanumeric == "W":
+            assert rule.validate() is None
+        else:
+            with pytest.raises(InvalidPostcode):
+                rule.validate()
+
+    @pytest.mark.parametrize("alphanumeric", string.ascii_uppercase)
+    def test_validating_N1_only_with_C_or_P(self, alphanumeric):
+        postcode = mock.Mock(outward=f"N1{alphanumeric}")
+        rule = CentralLondonDistrict(postcode)
+
+        if alphanumeric in ("C", "P"):
+            assert rule.validate() is None
+        else:
+            with pytest.raises(InvalidPostcode):
+                rule.validate()
+
+    @pytest.mark.parametrize("alphanumeric", string.ascii_uppercase)
+    def test_validating_NW1_only_with_W(self, alphanumeric):
+        postcode = mock.Mock(outward=f"NW1{alphanumeric}")
+        rule = CentralLondonDistrict(postcode)
+
+        if alphanumeric == "W":
+            assert rule.validate() is None
+        else:
+            with pytest.raises(InvalidPostcode):
+                rule.validate()
