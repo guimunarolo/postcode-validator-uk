@@ -8,7 +8,7 @@ class PostcodeRule:
 
     @classmethod
     def is_valid(cls, postcode):
-        postcode_attr_value = getattr(postcode, cls.attr_applied)
+        postcode_attr_value = getattr(postcode, cls.attr_applied, None)
         if not postcode_attr_value:
             raise AttributeError(f"This entity has not attr {cls.attr_applied}")
 
@@ -30,7 +30,7 @@ class SingleDigitDistrict(PostcodeRule):
 
     attr_applied = "outward"
     cases = ("BR", "FY", "HA", "HD", "HG", "HR", "HS", "HX", "JE", "LD", "SM", "SR", "WC", "WN", "ZE")
-    expression = re.compile(r"^(?!WN)[A-Z]{2}[0-9]$|^WN[0-9][A-Z]$")
+    expression = re.compile(r"^(?!WC)[A-Z]{2}[0-9]$|^WC[0-9][A-Z]$")
 
 
 class DoubleDigitDistrict(PostcodeRule):
