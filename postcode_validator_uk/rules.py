@@ -65,3 +65,19 @@ class CentralLondonDistrict(PostcodeRule):
     rule_regex = re.compile(
         r"^EC[1-4][A-Z]$|^E1W$|^N1[C|P]$|^NW1W$|^SE1P$|^SW1[A-Z]$|^W1[A-Z]$|^WC[1-2][A-Z]$"
     )
+
+
+class FirstLetters(PostcodeRule):
+    """The letters Q, V and X are not used in the first position."""
+
+    attr_applied = "outward"
+    applied_areas_regex = re.compile(r"^(Q|V|X)")
+    rule_regex = re.compile(r"^(?!Q|V|X).*")
+
+
+class SecondLetters(PostcodeRule):
+    """The letters I, J and Z are not used in the second position."""
+
+    attr_applied = "outward"
+    applied_areas_regex = re.compile(r"^[A-Z](I|J|Z)")
+    rule_regex = re.compile(r"^[A-Z](?!I|J|Z).*")

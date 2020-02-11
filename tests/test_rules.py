@@ -7,7 +7,9 @@ from postcode_validator_uk.exceptions import InvalidPostcode
 from postcode_validator_uk.rules import (
     CentralLondonDistrict,
     DoubleDigitDistrict,
+    FirstLetters,
     PostcodeRule,
+    SecondLetters,
     SingleDigitDistrict,
     ZeroOrTenDistrict,
 )
@@ -184,46 +186,72 @@ class TestZeroOrTenDistrict:
 
 
 class TestCentralLondonDistrict:
-    @pytest.mark.parametrize("numeric", range(1, 10))
-    def test_validating_EC_only_between_one_and_four(self, numeric):
-        postcode = mock.Mock(outward=f"EC{numeric}A")
+    @pytest.mark.parametrize("digit", range(1, 10))
+    def test_validating_EC_only_between_one_and_four(self, digit):
+        postcode = mock.Mock(outward=f"EC{digit}A")
         rule = CentralLondonDistrict(postcode)
 
-        if numeric < 5:
+        if digit < 5:
             assert rule.validate() is None
         else:
             with pytest.raises(InvalidPostcode):
                 rule.validate()
 
-    @pytest.mark.parametrize("alphanumeric", string.ascii_uppercase)
-    def test_validating_E1_only_with_W(self, alphanumeric):
-        postcode = mock.Mock(outward=f"E1{alphanumeric}")
+    @pytest.mark.parametrize("letter", string.ascii_uppercase)
+    def test_validating_E1_only_with_W(self, letter):
+        postcode = mock.Mock(outward=f"E1{letter}")
         rule = CentralLondonDistrict(postcode)
 
-        if alphanumeric == "W":
+        if letter == "W":
             assert rule.validate() is None
         else:
             with pytest.raises(InvalidPostcode):
                 rule.validate()
 
-    @pytest.mark.parametrize("alphanumeric", string.ascii_uppercase)
-    def test_validating_N1_only_with_C_or_P(self, alphanumeric):
-        postcode = mock.Mock(outward=f"N1{alphanumeric}")
+    @pytest.mark.parametrize("letter", string.ascii_uppercase)
+    def test_validating_N1_only_with_C_or_P(self, letter):
+        postcode = mock.Mock(outward=f"N1{letter}")
         rule = CentralLondonDistrict(postcode)
 
-        if alphanumeric in ("C", "P"):
+        if letter in ("C", "P"):
             assert rule.validate() is None
         else:
             with pytest.raises(InvalidPostcode):
                 rule.validate()
 
-    @pytest.mark.parametrize("alphanumeric", string.ascii_uppercase)
-    def test_validating_NW1_only_with_W(self, alphanumeric):
-        postcode = mock.Mock(outward=f"NW1{alphanumeric}")
+    @pytest.mark.parametrize("letter", string.ascii_uppercase)
+    def test_validating_NW1_only_with_W(self, letter):
+        postcode = mock.Mock(outward=f"NW1{letter}")
         rule = CentralLondonDistrict(postcode)
 
-        if alphanumeric == "W":
+        if letter == "W":
             assert rule.validate() is None
         else:
             with pytest.raises(InvalidPostcode):
                 rule.validate()
+
+
+class TestFirstLetters:
+    @pytest.mark.parametrize("letter", string.ascii_uppercase)
+    def test_invalidating_when_starts_with_Q_or_V_or_X(self, letter):
+        postcode = mock.Mock(outward=f"{letter}1")
+        rule = FirstLetters(postcode)
+
+        if letter in ("Q", "V", "X"):
+            with pytest.raises(InvalidPostcode):
+                rule.validate()
+        else:
+            assert rule.validate() is None
+
+
+class TestSecondLetters:
+    @pytest.mark.parametrize("letter", string.ascii_uppercase)
+    def test_invalidating_when_starts_with_I_or_J_or_Z(self, letter):
+        postcode = mock.Mock(outward=f"A{letter}")
+        rule = SecondLetters(postcode)
+
+        if letter in ("I", "J", "Z"):
+            with pytest.raises(InvalidPostcode):
+                rule.validate()
+        else:
+            assert rule.validate() is None
