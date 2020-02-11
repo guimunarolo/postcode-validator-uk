@@ -3,6 +3,7 @@ import re
 from .constants import (
     UK_POSTCODE_AREA_REGEX,
     UK_POSTCODE_DISTRICT_REGEX,
+    UK_POSTCODE_RULES_LIST,
     UK_POSTCODE_SECTOR_REGEX,
     UK_POSTCODE_UNIT_REGEX,
     UK_POSTCODE_VALIDATION_REGEX,
@@ -15,6 +16,7 @@ class UKPostcode:
     validated_postcode = None
     _outward = None
     _inward = None
+    _rules_list = UK_POSTCODE_RULES_LIST
 
     def __init__(self, postcode):
         self.raw_postcode = f"{postcode}"
@@ -60,3 +62,7 @@ class UKPostcode:
 
         self._outward, self._inward = postcode_matchs.groups()
         self.validated_postcode = f"{self._outward} {self._inward}"
+
+        for rule_class in self._rules_list:
+            rule = rule_class(self)
+            rule.validate()

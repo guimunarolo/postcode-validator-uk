@@ -156,32 +156,8 @@ class TestZeroOrTenDistrict:
                 rule.validate()
 
     @pytest.mark.parametrize("area", ZERO_OR_TEN_DISTRICTS_AREAS)
-    def test_invalidating_when_has_wrong_digit(self, area):
-        postcode = mock.Mock(outward=f"{area}1")
-        rule = ZeroOrTenDistrict(postcode)
-
-        with pytest.raises(InvalidPostcode):
-            rule.validate()
-
-    @pytest.mark.parametrize("area", ZERO_OR_TEN_DISTRICTS_AREAS)
-    def test_invalidating_when_has_alphanumeric(self, area):
-        postcode = mock.Mock(outward=f"{area}A")
-        rule = ZeroOrTenDistrict(postcode)
-
-        with pytest.raises(InvalidPostcode):
-            rule.validate()
-
-    @pytest.mark.parametrize("area", ZERO_OR_TEN_DISTRICTS_AREAS)
-    def test_invalidating_when_has_too_many_digits(self, area):
-        postcode = mock.Mock(outward=f"{area}101")
-        rule = ZeroOrTenDistrict(postcode)
-
-        with pytest.raises(InvalidPostcode):
-            rule.validate()
-
-    @pytest.mark.parametrize("area", ZERO_OR_TEN_DISTRICTS_AREAS)
-    def test_invalidating_has_no_digit(self, area):
-        postcode = mock.Mock(outward=f"{area}")
+    def test_invalidating_when_not_valid_area_has_zero(self, area):
+        postcode = mock.Mock(outward=f"AA0")
         rule = ZeroOrTenDistrict(postcode)
 
         with pytest.raises(InvalidPostcode):

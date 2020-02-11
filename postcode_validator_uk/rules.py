@@ -49,8 +49,8 @@ class ZeroOrTenDistrict(PostcodeRule):
     """
 
     attr_applied = "outward"
-    applied_areas_regex = re.compile(r"^(BL|BS|CM|CR|FY|HA|PR|SL|SS)")
-    rule_regex = re.compile(r"^[A-Z]{2}0$|^BS10$")
+    applied_areas_regex = re.compile(r"^[A-Z]{2}(0|10)$")
+    rule_regex = re.compile(r"^(BL|BS|CM|CR|FY|HA|PR|SL|SS)0$|^BS10$")
 
 
 class CentralLondonDistrict(PostcodeRule):

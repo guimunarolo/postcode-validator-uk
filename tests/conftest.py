@@ -9,6 +9,8 @@ def raw_uk_postcode():
 
 @pytest.fixture
 def uk_postcode_validator():
+    UKPostcode._rules_list = []
+
     return UKPostcode
 
 
