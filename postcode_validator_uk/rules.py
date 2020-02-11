@@ -103,3 +103,14 @@ class FourthLetter(PostcodeRule):
     attr_applied = "outward"
     applied_areas_regex = re.compile(r"^[A-Z]{2}[0-9][A-Z]$")
     rule_regex = re.compile(r"^[A-Z]{2}[0-9](A|B|E|H|M|N|P|R|V|W|X|Y)$")
+
+
+class LastTwoLetter(PostcodeRule):
+    """
+    The final two letters do not use C, I, K, M, O or V, so as not to resemble digits
+    or each other when hand-written.
+    """
+
+    attr_applied = "inward"
+    applied_areas_regex = re.compile(r"^[0-9][A-Z]{2}$")
+    rule_regex = re.compile(r"^[0-9][A|B|D|E|F|G|H|J|L|N|P|Q|R|S|T|U|W|X|Y|Z]{2}$")

@@ -9,6 +9,7 @@ from postcode_validator_uk.rules import (
     DoubleDigitDistrict,
     FirstLetter,
     FourthLetter,
+    LastTwoLetter,
     PostcodeRule,
     SecondLetter,
     SingleDigitDistrict,
@@ -283,3 +284,27 @@ class TestFourthLetter:
         else:
             with pytest.raises(InvalidPostcode):
                 rule.validate()
+
+
+class TestLastTwoLetter:
+    @pytest.mark.parametrize("letter", string.ascii_uppercase)
+    def test_invalidating_when_last_letter_is_invalid(self, letter):
+        postcode = mock.Mock(inward=f"9A{letter}")
+        rule = LastTwoLetter(postcode)
+
+        if letter in ("C", "I", "K", "M", "O", "V"):
+            with pytest.raises(InvalidPostcode):
+                rule.validate()
+        else:
+            assert rule.validate() is None
+
+    @pytest.mark.parametrize("letter", string.ascii_uppercase)
+    def test_invalidating_when_penultimate_letter_is_invalid(self, letter):
+        postcode = mock.Mock(inward=f"9{letter}A")
+        rule = LastTwoLetter(postcode)
+
+        if letter in ("C", "I", "K", "M", "O", "V"):
+            with pytest.raises(InvalidPostcode):
+                rule.validate()
+        else:
+            assert rule.validate() is None
