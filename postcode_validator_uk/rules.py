@@ -67,7 +67,7 @@ class CentralLondonDistrict(PostcodeRule):
     )
 
 
-class FirstLetters(PostcodeRule):
+class FirstLetter(PostcodeRule):
     """The letters Q, V and X are not used in the first position."""
 
     attr_applied = "outward"
@@ -75,9 +75,20 @@ class FirstLetters(PostcodeRule):
     rule_regex = re.compile(r"^(?!Q|V|X).*")
 
 
-class SecondLetters(PostcodeRule):
+class SecondLetter(PostcodeRule):
     """The letters I, J and Z are not used in the second position."""
 
     attr_applied = "outward"
     applied_areas_regex = re.compile(r"^[A-Z](I|J|Z)")
     rule_regex = re.compile(r"^[A-Z](?!I|J|Z).*")
+
+
+class ThirdLetter(PostcodeRule):
+    """
+    The only letters to appear in the third position are A, B, C, D, E, F, G, H, J, K, P, S, T, U and W
+    when the structure starts with A9A.
+    """
+
+    attr_applied = "outward"
+    applied_areas_regex = re.compile(r"^[A-Z][0-9][A-Z]$")
+    rule_regex = re.compile(r"^[A-Z][0-9](A|B|C|D|E|F|G|H|J|K|P|S|T|U|W)$")

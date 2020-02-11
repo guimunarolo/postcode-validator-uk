@@ -7,10 +7,11 @@ from postcode_validator_uk.exceptions import InvalidPostcode
 from postcode_validator_uk.rules import (
     CentralLondonDistrict,
     DoubleDigitDistrict,
-    FirstLetters,
+    FirstLetter,
     PostcodeRule,
-    SecondLetters,
+    SecondLetter,
     SingleDigitDistrict,
+    ThirdLetter,
     ZeroOrTenDistrict,
 )
 
@@ -233,9 +234,9 @@ class TestCentralLondonDistrict:
 
 class TestFirstLetters:
     @pytest.mark.parametrize("letter", string.ascii_uppercase)
-    def test_invalidating_when_starts_with_Q_or_V_or_X(self, letter):
+    def test_invalidating_when_first_letter_is_invalid(self, letter):
         postcode = mock.Mock(outward=f"{letter}1")
-        rule = FirstLetters(postcode)
+        rule = FirstLetter(postcode)
 
         if letter in ("Q", "V", "X"):
             with pytest.raises(InvalidPostcode):
@@ -246,12 +247,25 @@ class TestFirstLetters:
 
 class TestSecondLetters:
     @pytest.mark.parametrize("letter", string.ascii_uppercase)
-    def test_invalidating_when_starts_with_I_or_J_or_Z(self, letter):
+    def test_invalidating_when_second_letter_is_invalid(self, letter):
         postcode = mock.Mock(outward=f"A{letter}")
-        rule = SecondLetters(postcode)
+        rule = SecondLetter(postcode)
 
         if letter in ("I", "J", "Z"):
             with pytest.raises(InvalidPostcode):
                 rule.validate()
         else:
             assert rule.validate() is None
+
+
+class TestThirdLetter:
+    @pytest.mark.parametrize("letter", string.ascii_uppercase)
+    def test_invalidating_when_third_letter_is_invalid(self, letter):
+        postcode = mock.Mock(outward=f"A9{letter}")
+        rule = ThirdLetter(postcode)
+
+        if letter in ("A", "B", "C", "D", "E", "F", "G", "H", "J", "K", "P", "S", "T", "U", "W"):
+            assert rule.validate() is None
+        else:
+            with pytest.raises(InvalidPostcode):
+                rule.validate()
