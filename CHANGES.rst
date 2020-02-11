@@ -1,6 +1,10 @@
 Changelog
 ---------
 
+0.0.5
+~~~~~~
+* Add rules validation
+
 0.0.4
 ~~~~~~
 * Remove special postcodes semi compatibility
