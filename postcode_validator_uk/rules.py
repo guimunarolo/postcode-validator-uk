@@ -92,3 +92,14 @@ class ThirdLetter(PostcodeRule):
     attr_applied = "outward"
     applied_areas_regex = re.compile(r"^[A-Z][0-9][A-Z]$")
     rule_regex = re.compile(r"^[A-Z][0-9](A|B|C|D|E|F|G|H|J|K|P|S|T|U|W)$")
+
+
+class FourthLetter(PostcodeRule):
+    """
+    The only letters to appear in the fourth position are A, B, E, H, M, N, P, R, V, W, X and Y
+    when the structure starts with AA9A.
+    """
+
+    attr_applied = "outward"
+    applied_areas_regex = re.compile(r"^[A-Z]{2}[0-9][A-Z]$")
+    rule_regex = re.compile(r"^[A-Z]{2}[0-9](A|B|E|H|M|N|P|R|V|W|X|Y)$")

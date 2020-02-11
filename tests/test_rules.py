@@ -8,6 +8,7 @@ from postcode_validator_uk.rules import (
     CentralLondonDistrict,
     DoubleDigitDistrict,
     FirstLetter,
+    FourthLetter,
     PostcodeRule,
     SecondLetter,
     SingleDigitDistrict,
@@ -265,6 +266,19 @@ class TestThirdLetter:
         rule = ThirdLetter(postcode)
 
         if letter in ("A", "B", "C", "D", "E", "F", "G", "H", "J", "K", "P", "S", "T", "U", "W"):
+            assert rule.validate() is None
+        else:
+            with pytest.raises(InvalidPostcode):
+                rule.validate()
+
+
+class TestFourthLetter:
+    @pytest.mark.parametrize("letter", string.ascii_uppercase)
+    def test_invalidating_when_fourth_letter_is_invalid(self, letter):
+        postcode = mock.Mock(outward=f"AA9{letter}")
+        rule = FourthLetter(postcode)
+
+        if letter in ("A", "B", "E", "H", "M", "N", "P", "R", "V", "W", "X", "Y"):
             assert rule.validate() is None
         else:
             with pytest.raises(InvalidPostcode):
