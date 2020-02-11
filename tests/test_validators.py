@@ -1,5 +1,9 @@
+from unittest import mock
+
 import pytest
 from postcode_validator_uk.exceptions import InvalidPostcode, PostcodeNotValidated
+
+from .factories import RuleFactory
 
 
 def test_uk_postcode_validator_constructor(raw_uk_postcode, uk_postcode_validator_instance):
@@ -8,6 +12,13 @@ def test_uk_postcode_validator_constructor(raw_uk_postcode, uk_postcode_validato
 
 def test_uk_postcode_validator_string_conversion(raw_uk_postcode, uk_postcode_validator_instance):
     assert f"{uk_postcode_validator_instance}" == raw_uk_postcode
+
+
+@pytest.mark.parametrize(
+    "raw_postcode", ("W31BB", "W3 1BB", "W3  1BB", "W3  1BB",),
+)
+def test_uk_postcode_validator_validate_with_any_spaces_amount(raw_postcode, uk_postcode_validator):
+    assert uk_postcode_validator(raw_postcode).validate() is None
 
 
 @pytest.mark.parametrize(
@@ -198,3 +209,20 @@ def test_uk_postcode_validator_unit_result(raw_postcode, expected_unit, uk_postc
     postcode_instance.validate()
 
     assert postcode_instance.unit == expected_unit
+
+
+def test_uk_postcode_validator_validate_rules_iterate_list(uk_postcode_validator, raw_uk_postcode):
+    RuleFactory.validate = mock.Mock()
+    uk_postcode_validator._rules_list = (RuleFactory, RuleFactory)
+
+    assert uk_postcode_validator(raw_uk_postcode).validate() is None
+    assert RuleFactory.validate.call_count == 2
+
+
+def test_uk_postcode_validator_validate_raises_validation_exception_from_rules(uk_postcode_validator):
+    RuleFactory.validate.side_effect = InvalidPostcode
+    uk_postcode_validator._rules_list = (RuleFactory, RuleFactory)
+
+    with pytest.raises(InvalidPostcode):
+        uk_postcode_validator(uk_postcode_validator).validate()
+        assert RuleFactory.validate.called_count == 1
