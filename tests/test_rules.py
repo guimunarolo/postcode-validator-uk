@@ -36,7 +36,7 @@ SINGLE_DIGIT_DISTRICTS_AREAS = (
     "ZE",
 )
 DOUBLE_DIGIT_DISTRICTS_AREAS = ("AB", "LL", "SO")
-ZERO_OR_TEN_DISTRICTS_AREAS = ("BL", "BS", "CM", "CR", "FY", "HA", "PR", "SL", "SS")
+ZERO_OR_TEN_DISTRICTS_AREAS = ("BL", "BS", "CM", "CR", "FY", "HA", "OX", "PR", "SL", "SS")
 
 
 class TestPostcodeRule:
@@ -143,14 +143,18 @@ class TestZeroOrTenDistrict:
         postcode = mock.Mock(outward=f"{area}0")
         rule = ZeroOrTenDistrict(postcode)
 
-        assert rule.validate() is None
+        if area in ["OX"]:
+            with pytest.raises(InvalidPostcode):
+                rule.validate()
+        else:
+            assert rule.validate() is None
 
     @pytest.mark.parametrize("area", ZERO_OR_TEN_DISTRICTS_AREAS)
     def test_validating_valid_postcode_with_district_ten_only_with_BS(self, area):
         postcode = mock.Mock(outward=f"{area}10")
         rule = ZeroOrTenDistrict(postcode)
 
-        if area == "BS":
+        if area in ["BS", "OX"]:
             assert rule.validate() is None
         else:
             with pytest.raises(InvalidPostcode):
