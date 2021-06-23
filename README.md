@@ -63,6 +63,6 @@ postcode.unit
 ## Running tests
 
 ```bash
-$ pipenv install --dev
+$ poetry install
 $ make test
 ```
