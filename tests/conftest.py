@@ -1,4 +1,5 @@
 import pytest
+
 from postcode_validator_uk.validators import UKPostcode
 
 
