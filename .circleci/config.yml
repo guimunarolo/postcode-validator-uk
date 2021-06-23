@@ -5,7 +5,7 @@ version: 2
 jobs:
     build:
         docker:
-            - image: circleci/python:3.8.1-buster
+            - image: circleci/python:3.9-buster
 
         working_directory: ~/repo
         steps:
@@ -14,21 +14,21 @@ jobs:
             - restore_cache:
                 name: Restoring dependencies cache
                 keys:
-                - v1-dependencies-{{ checksum "Pipfile.lock" }}
+                - v1-dependencies-{{ checksum "poetry.lock" }}
 
             - run:
                 name: Install system dependencies
-                command: sudo pip install pipenv
+                command: sudo pip install poetry
 
             - run:
                 name: Install dependencies
-                command: pipenv install --dev --deploy
+                command: poetry install
 
             - save_cache:
                 name: Saving dependencies cache
                 paths:
                     - ./venv
-                key: v1-dependencies={{ checksum "Pipfile.lock" }}
+                key: v1-dependencies={{ checksum "poetry.lock" }}
 
             - restore_cache:
                 name: Restoring hooks cache
@@ -36,7 +36,7 @@ jobs:
 
             - run:
                 name: linters
-                command: SKIP=no-commit-to-branch pipenv run pre-commit run -a -v
+                command: SKIP=no-commit-to-branch poetry run pre-commit run -a -v
 
             - save_cache:
                 name: Saving hooks cache
@@ -47,9 +47,9 @@ jobs:
             - run:
                 name: Run tests
                 command: |
-                    pipenv run pytest
+                    poetry run pytest
 
             - run:
                 name: codecov
                 command:
-                    pipenv run codecov
+                    poetry run codecov
