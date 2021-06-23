@@ -1,6 +1,7 @@
 from unittest import mock
 
 import pytest
+
 from postcode_validator_uk.exceptions import InvalidPostcode, PostcodeNotValidated
 
 from .factories import RuleFactory
@@ -15,7 +16,13 @@ def test_uk_postcode_validator_string_conversion(raw_uk_postcode, uk_postcode_va
 
 
 @pytest.mark.parametrize(
-    "raw_postcode", ("W31BB", "W3 1BB", "W3  1BB", "W3  1BB",),
+    "raw_postcode",
+    (
+        "W31BB",
+        "W3 1BB",
+        "W3  1BB",
+        "W3  1BB",
+    ),
 )
 def test_uk_postcode_validator_validate_with_any_spaces_amount(raw_postcode, uk_postcode_validator):
     assert uk_postcode_validator(raw_postcode).validate() is None
@@ -60,7 +67,17 @@ def test_uk_postcode_validator_validate_uppercase_postcodes(raw_postcode, uk_pos
 
 
 @pytest.mark.parametrize(
-    "invalid_postcode", ("EC1A A4BB", "1W1A 0AX", "M001 1AE", "B338-TH5", "CR2 6XH#", "", "0000000", None,),
+    "invalid_postcode",
+    (
+        "EC1A A4BB",
+        "1W1A 0AX",
+        "M001 1AE",
+        "B338-TH5",
+        "CR2 6XH#",
+        "",
+        "0000000",
+        None,
+    ),
 )
 def test_uk_postcode_validator_validate_raises_validation_exception(invalid_postcode, uk_postcode_validator):
     with pytest.raises(InvalidPostcode):

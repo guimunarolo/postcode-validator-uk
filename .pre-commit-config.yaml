@@ -13,12 +13,12 @@ repos:
       args: ['--exclude=docs/*', '--ignore=E501,W503,E203']
 
 - repo: https://github.com/pre-commit/mirrors-isort
-  rev: v4.3.21
+  rev: v5.9.1
   hooks:
   - id: isort
     additional_dependencies: ['toml']
 
 - repo: https://github.com/python/black
-  rev: 19.10b0
+  rev: 21.6b0
   hooks:
     - id: black
