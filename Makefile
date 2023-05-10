@@ -15,10 +15,10 @@ clean-build:
 	@rm -fr *.egg-info
 
 test:
-	pipenv run pytest -sx
+	poetry run pytest -sx
 
-pyformat:
-	black .
+black:
+	poetry run black .
 
 release:
 	python3 setup.py sdist bdist_wheel

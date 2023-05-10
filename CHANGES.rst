@@ -1,6 +1,12 @@
 Changelog
 ---------
 
+0.1.0
+~~~~~~
+* Switch pipenv by portry
+* Update dependencies
+* Improve reale workflow
+
 0.0.5
 ~~~~~~
 * Add rules validation

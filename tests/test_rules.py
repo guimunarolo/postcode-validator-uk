@@ -3,6 +3,7 @@ import string
 from unittest import mock
 
 import pytest
+
 from postcode_validator_uk.exceptions import InvalidPostcode
 from postcode_validator_uk.rules import (
     CentralLondonDistrict,
@@ -147,7 +148,7 @@ class TestZeroDistrict:
 
     @pytest.mark.parametrize("area", ZERO_DISTRICTS_AREAS)
     def test_invalidating_when_not_valid_area_has_zero(self, area):
-        postcode = mock.Mock(outward=f"AA0")
+        postcode = mock.Mock(outward="AA0")
         rule = ZeroDistrict(postcode)
 
         with pytest.raises(InvalidPostcode):
